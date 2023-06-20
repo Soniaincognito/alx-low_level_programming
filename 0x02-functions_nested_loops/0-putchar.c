@@ -1,6 +1,17 @@
-#include <stdio.h>
+#include "_putchar"
+/**
+ * main - prints the string "_putchar" from a character array.
+ * Return: 0 on success.
+ */
+int main(void)
+{
+	char c[] = "_putchar";
+	int i;
 
-int main() {
-    printf("_putchar\n");
-    return 0;
+	for (i = 0; i < 9; i++)
+	{
+		_putchar(c[i]);
+	}
+	_putchar('\n');
+	return (0);
 }
