@@ -1,39 +1,71 @@
+#include <stdio.h>
 #include <stdlib.h>
-#include "main.h"
+#include <string.h>
 
 /**
- * count_word - helper function to count the number of words in a string
- * @s: string to evaluate
+ * count_words - Counts the number of words in a string
+ * @str: The string to count words from
  *
- * Return: number of words
+ * Return: The number of words
  */
-int count_word(char *s)
+int count_words(char *str)
 {
-	int flag, c, w;
+    int count = 0;
+    int in_word = 0;
 
-	flag = 0;
-	w = 0;
+    while (*str != '\0')
+    {
+        if (*str == ' ')
+        {
+            in_word = 0;
+        }
+        else if (in_word == 0)
+        {
+            in_word = 1;
+            count++;
+        }
 
-	for (c = 0; s[c] != '\0'; c++)
-	{
-		if (s[c] == ' ')
-			flag = 0;
-		else if (flag == 0)
-		{
-			flag = 1;
-			w++;
-		}
-	}
+        str++;
+    }
 
-	return (w);
+    return count;
 }
+
 /**
- * **strtow - splits a string into words
- * @str: string to split
+ * strtow - Splits a string into words
+ * @str: The string to split
  *
- * Return: pointer to an array of strings (Success)
- * or NULL (Error)
+ * Return: Pointer to an array of strings (words), or NULL on failure
  */
 char **strtow(char *str)
 {
+    if (str == NULL || *str == '\0')
+        return NULL;
+
+    int num_words = count_words(str);
+    char **words = malloc((num_words + 1) * sizeof(char *));
+    if (words == NULL)
+        return NULL;
+
+    int i = 0;
+    char *token = strtok(str, " ");
+    while (token != NULL)
+    {
+        words[i] = strdup(token);
+        if (words[i] == NULL)
+        {
+            for (int j = 0; j < i; j++)
+                free(words[j]);
+            free(words);
+            return NULL;
+        }
+
+        i++;
+        token = strtok(NULL, " ");
+    }
+
+    words[i] = NULL;
+
+    return words;
+}
 
